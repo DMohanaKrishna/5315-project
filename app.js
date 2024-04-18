@@ -40,7 +40,7 @@ database
     app.get("*", database.checkUser);
     app.post("*", database.checkUser);
 
-    app.get("/", (req, res) => res.render("home"));
+    app.get("/home", (req, res) => res.render("home"));
 
     app.get("/signup", (req, res) => res.render("signup.hbs"));
     app.post(
