@@ -18,17 +18,15 @@ const { body, param, query, validationResult } = require("express-validator");
 const cookieParser = require("cookie-parser");
 const path = require("path");
 
-const app = express();// Initialize Express application
-const database = require("./config/database");// Import database configuration
-const port = process.env.PORT;// Get port from environment variables
+const app = express();
+const database = require("./config/database");
+const port = process.env.PORT;
 
-// Set up static file serving and body parsing middleware
 app.use(express.static(path.join(__dirname, "public")));
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 app.use(cookieParser());
 
-// Initialize database connection
 database
   .initialize()
   .then(() => {
@@ -36,7 +34,6 @@ database
     app.engine(".hbs", hbs.engine);
     app.set("view engine", ".hbs");
 
-    // Middleware to check user authentication for all routes
     app.get("*", database.checkUser);
     app.post("*", database.checkUser);
 
@@ -196,8 +193,6 @@ database
         }
       }
     );
-
-     // RESTful API endpoints for managing restaurants
 
     app.post("/api/restaurants", database.requireAuth, async (req, res) => {
       try {
